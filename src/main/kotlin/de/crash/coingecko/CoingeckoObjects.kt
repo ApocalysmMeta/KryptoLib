@@ -15,6 +15,176 @@ data class CoingeckoCoinsListObj (
     val platforms: Map<String, String?>
 )
 
+data class CoingeckoCoinResponse (
+    val id: String,
+    val symbol: String,
+    val name: String,
+    val asset_platform_id: String?,
+    val platforms: JsonNode,
+    val block_time_in_minutes: Long,
+    val hashing_algorithm: String,
+    val categories: List<String>,
+    val public_notice: String?,
+    val additional_notices: List<String?>,
+    val localization: JsonNode?,
+    val description: JsonNode,
+    val links: CoingeckoCoinLinks,
+    val image: CoingeckoCoinImage,
+    val country_origin: String,
+    val genesis_date: String,
+    val sentiment_votes_up_percentage: Double,
+    val sentiment_votes_down_percentage: Double,
+    val market_cap_rank: Long,
+    val coingecko_rank: Long,
+    val coingecko_score: Double,
+    val developer_score: Double,
+    val community_score: Double,
+    val liquidity_score: Double,
+    val public_interest_score: Double,
+    val market_data: CoingeckoCoinMarketData?,
+    val community_data: CoingeckoCoinCommunityData?,
+    val developer_data: CoingeckoCoinDeveloperData?,
+    val public_interest_stats: CoingeckoCoinPublicInterestStats?,
+    val status_updates: List<Any?>,
+    val last_updated: String,
+    val tickers: List<CoingeckoCoinTicker?>
+)
+
+data class CoingeckoCoinCommunityData (
+    val facebook_likes: Long?,
+    val twitter_followers: Long?,
+    val reddit_average_posts_48h: Double?,
+    val reddit_average_comments_48h: Double?,
+    val reddit_subscribers: Long?,
+    val reddit_accounts_active_48h: Long?,
+    val telegram_channel_user_count: Long?
+)
+
+data class CoingeckoCoinDeveloperData (
+    val forks: Long,
+    val stars: Long,
+    val subscribers: Long,
+    val total_issues: Long,
+    val closed_issues: Long,
+    val pull_requests_merged: Long,
+    val pull_request_contributors: Long,
+    val code_additions_deletions_4_weeks: CoingeckoCoinCodeAdditionsDeletions4Weeks,
+    val commit_count_4_weeks: Long,
+    val last_4_weeks_commit_activity_series: List<Long>
+)
+
+data class CoingeckoCoinCodeAdditionsDeletions4Weeks (
+    val additions: Long,
+    val deletions: Long
+)
+
+data class CoingeckoCoinImage (
+    val thumb: String,
+    val small: String,
+    val large: String
+)
+
+data class CoingeckoCoinLinks (
+    val homepage: List<String?>,
+    val blockchain_site: List<String?>,
+    val official_forum_url: List<String?>,
+    val chat_url: List<String?>,
+    val announcement_url: List<String?>,
+    val twitter_screen_name: String?,
+    val facebook_username: String?,
+    val bitcointalk_thread_identifier: String?,
+    val telegram_channel_identifier: String?,
+    val subreddit_url: String?,
+    val repos_url: CoingeckoCoinReposURL
+)
+
+data class CoingeckoCoinReposURL (
+    val github: List<String?>,
+    val bitbucket: List<String?>
+)
+
+data class CoingeckoCoinMarketData (
+    val current_price: Map<String, Double>,
+    val total_value_locked: JsonNode?,
+    val mcap_to_tvl_ratio: JsonNode?,
+    val fdv_to_tvl_ratio: JsonNode?,
+    val roi: JsonNode?,
+    val ath: Map<String, Double>,
+    val ath_change_percentage: Map<String, Double>,
+    val ath_date: Map<String, String>,
+    val atl: Map<String, Double>,
+    val atl_change_percentage: Map<String, Double>,
+    val atl_date: Map<String, String>,
+    val market_cap: Map<String, Double>,
+    val market_cap_rank: Long,
+    val fully_diluted_valuation: Map<String, Double>,
+    val total_volume: Map<String, Double>,
+    val high_24h: Map<String, Double>,
+    val low_24h: Map<String, Double>,
+    val price_change_24h: Double,
+    val price_change_percentage_24h: Double,
+    val price_change_percentage_7d: Double,
+    val price_change_percentage_14d: Double,
+    val price_change_percentage_30d: Double,
+    val price_change_percentage_60d: Double,
+    val price_change_percentage_200d: Double,
+    val price_change_percentage_1y: Double,
+    val market_cap_change_24h: Long,
+    val market_cap_change_percentage_24h: Double,
+    val price_change_24h_in_currency: Map<String, Double>,
+    val price_change_percentage_1h_in_currency: Map<String, Double>,
+    val price_change_percentage_24h_in_currency: Map<String, Double>,
+    val price_change_percentage_7d_in_currency: Map<String, Double>,
+    val price_change_percentage_14d_in_currency: Map<String, Double>,
+    val price_change_percentage_30d_in_currency: Map<String, Double>,
+    val price_change_percentage_60d_in_currency: Map<String, Double>,
+    val price_change_percentage_200d_in_currency: Map<String, Double>,
+    val price_change_percentage_1y_in_currency: Map<String, Double>,
+    val market_cap_change_24h_in_currency: Map<String, Double>,
+    val market_cap_change_percentage_24h_in_currency: Map<String, Double>,
+    val total_supply: Long,
+    val max_supply: Long,
+    val circulating_supply: Long,
+    val sparkline_7d: CoingeckoCoinSparkline7D,
+    val last_updated: String
+)
+
+data class CoingeckoCoinSparkline7D (
+    val price: List<Double>
+)
+
+data class CoingeckoCoinPublicInterestStats (
+    val alexa_rank: Long,
+    val bing_matches: JsonNode?
+)
+
+data class CoingeckoCoinTicker (
+    val base: String,
+    val target: String,
+    val market: CoingeckoCoinMarket,
+    val last: Double,
+    val volume: Double,
+    val converted_last: Map<String, Double>,
+    val converted_volume: Map<String, Double>,
+    val trust_score: String,
+    val bid_ask_spread_percentage: Double,
+    val timestamp: String,
+    val last_traded_at: String,
+    val last_fetch_at: String,
+    val is_anomaly: Boolean,
+    val is_stale: Boolean,
+    val trade_url: String?,
+    val token_info_url: Any?,
+    val coin_id: String,
+    val target_coin_id: String?
+)
+
+data class CoingeckoCoinMarket (
+    val name: String,
+    val identifier: String,
+    val has_trading_incentive: Boolean
+)
+
 class CoingeckoAssetPlatformsResponse(elements: Collection<CoingeckoAssetPlatformObj>) : ArrayList<CoingeckoAssetPlatformObj>(elements)
 
 data class CoingeckoAssetPlatformObj (
@@ -23,6 +193,25 @@ data class CoingeckoAssetPlatformObj (
     val name: String,
     val shortname: String
 )
+
+class CoingeckoCoinsCategoryListResponse(elements: Collection<CoingeckoCoinsCategoryListObj>) : ArrayList<CoingeckoCoinsCategoryListObj>(elements)
+
+data class CoingeckoCoinsCategoryListObj (
+    val category_id: String,
+    val name: String
+)
+
+class CoingeckoCoinsCategoriesResponse(elements: Collection<CoingeckoCoinsCatogory>) : ArrayList<CoingeckoCoinsCatogory>(elements)
+
+data class CoingeckoCoinsCatogory (
+    val id: String,
+    val name: String,
+    val market_cap: Double,
+    val market_cap_change_24h: Double,
+    val volume_24h: Double,
+    val updated_at: String
+)
+
 
 class CoingeckoExchangesResponse(elements: Collection<CoingeckoExchange>) : ArrayList<CoingeckoExchange>(elements)
 
@@ -93,7 +282,7 @@ data class CoingeckoExchangeProjectImage (
 data class CoingeckoExchangeTicker (
     val base: String,
     val target: String,
-    val market: Market,
+    val market: CoingeckoExchangeMarket,
     val last: Double,
     val volume: Double,
     val converted_last: Map<String, Double>,
@@ -111,11 +300,20 @@ data class CoingeckoExchangeTicker (
     val target_coin_id: String?
 )
 
-data class Market (
+data class CoingeckoExchangeMarket (
     val name: String,
     val identifier: String,
     val has_trading_incentive: Boolean
 )
+
+data class CoingeckoExchangeTickersResponse(
+    val name: String,
+    val tickers: List<CoingeckoExchangeTicker>
+)
+
+class CoingeckoExchangeStatusUpdatesResponse(elements: Collection<CoingeckoExchangeStatusUpdate>) : ArrayList<CoingeckoExchangeStatusUpdate>(elements)
+
+class CoingeckoExchangeVolumeChartResponse(elements: Collection<List<Any>>) : ArrayList<List<Any>>(elements)
 
 class CoingeckoFinancePlatformsResponse(elements: Collection<CoingeckoFinancePlatform>) : ArrayList<CoingeckoFinancePlatform>(elements)
 
