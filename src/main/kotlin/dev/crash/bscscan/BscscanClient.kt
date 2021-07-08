@@ -5,21 +5,22 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import dev.crash.etherscan.*
 import dev.crash.get
 import dev.crash.joinToNoSpaceString
+import java.math.BigDecimal
 import java.net.URL
 
 class BscscanClient(private val API_KEY: String) {
     private val baseURL = "https://api.bscscan.com/api"
 
-    fun accountBalance(address: String): Long {
+    fun getAccountBalance(address: String): BigDecimal {
         val response = URL("$baseURL?module=account&action=balance&address=$address&tag=latest&apikey=$API_KEY").get()
-        return jacksonObjectMapper().readValue<EtherscanResponse<Long>>(response).result
+        return jacksonObjectMapper().readValue<EtherscanResponse<BigDecimal>>(response).result
     }
 
-    fun accountBalances(addresses: List<String>): HashMap<String, Long> {
+    fun getAccountBalances(addresses: List<String>): HashMap<String, BigDecimal> {
         val response = URL("$baseURL?module=account&action=balancemulti&address=${addresses.joinToNoSpaceString()}&tag=latest&apikey=$API_KEY").get()
-        val result = hashMapOf<String, Long>()
+        val result = hashMapOf<String, BigDecimal>()
         jacksonObjectMapper().readValue<EtherscanResponse<List<EtherscanAddressBalance>>>(response).result.forEach {
-            result[it.account] = it.balance.toLong()
+            result[it.account] = BigDecimal(it.balance)
         }
         return result
     }

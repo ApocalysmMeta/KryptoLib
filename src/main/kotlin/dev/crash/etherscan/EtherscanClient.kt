@@ -4,22 +4,23 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import dev.crash.get
 import dev.crash.joinToNoSpaceString
+import java.math.BigDecimal
 import java.math.BigInteger
 import java.net.URL
 
 class EtherscanClient(private val API_KEY: String) {
     private val baseURL = "https://api.etherscan.io/api"
 
-    fun getAccountBalance(address: String): BigInteger {
+    fun getAccountBalance(address: String): BigDecimal {
         val response = URL("$baseURL?module=account&action=balance&address=$address&tag=latest&apikey=$API_KEY").get()
-        return jacksonObjectMapper().readValue<EtherscanResponse<BigInteger>>(response).result
+        return BigDecimal(jacksonObjectMapper().readValue<EtherscanResponse<String>>(response).result).divide(BigDecimal("1000000000000000000"))
     }
 
-    fun getAccountBalances(addresses: List<String>): HashMap<String, BigInteger> {
+    fun getAccountBalances(addresses: List<String>): HashMap<String, BigDecimal> {
         val response = URL("$baseURL?module=account&action=balancemulti&address=${addresses.joinToNoSpaceString()}&tag=latest&apikey=$API_KEY").get()
-        val result = hashMapOf<String, BigInteger>()
+        val result = hashMapOf<String, BigDecimal>()
         jacksonObjectMapper().readValue<EtherscanResponse<List<EtherscanAddressBalance>>>(response).result.forEach {
-            result[it.account] = it.balance.toBigInteger()
+            result[it.account] = BigDecimal(it.balance)
         }
         return result
     }
@@ -104,9 +105,9 @@ class EtherscanClient(private val API_KEY: String) {
         return jacksonObjectMapper().readValue<EtherscanResponse<Long>>(response).result
     }
 
-    fun getERC20TokenBalance(address: String, contractAddress: String): Long {
+    fun getERC20TokenBalance(address: String, contractAddress: String): BigDecimal {
         val response = URL("$baseURL?module=account&action=tokenbalance&contractaddress=$contractAddress&address=$address&tag=latest&apikey=$API_KEY").get()
-        return jacksonObjectMapper().readValue<EtherscanResponse<Long>>(response).result
+        return jacksonObjectMapper().readValue<EtherscanResponse<BigDecimal>>(response).result
     }
 
     fun getEstimatedConfirmationTime(gasPrice: Long): Long {
