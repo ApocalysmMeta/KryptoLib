@@ -1,4 +1,4 @@
-package de.crash
+package dev.crash
 
 import java.net.URL
 import java.nio.charset.Charset

@@ -1,4 +1,4 @@
-package de.crash.etherscan
+package dev.crash.etherscan
 
 data class EtherscanResponse<T>(
     val status: Int,

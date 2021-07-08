@@ -1,4 +1,4 @@
-package de.crash.base
+package dev.crash.base
 
 object Base58 {
     private val ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz".toCharArray()

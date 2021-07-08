@@ -5,7 +5,7 @@ plugins {
     `maven-publish`
 }
 
-group = "de.crash"
+group = "dev.crash"
 version = "0.1"
 
 repositories {
@@ -15,13 +15,8 @@ repositories {
 apply(plugin = "maven-publish")
 
 dependencies {
-    api("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.3")
+    api("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.4")
     api("org.bouncycastle:bcprov-jdk15to18:1.69")
-    testImplementation(kotlin("test"))
-}
-
-tasks.test {
-    useJUnit()
 }
 
 tasks.withType<KotlinCompile> {
@@ -31,7 +26,7 @@ tasks.withType<KotlinCompile> {
 publishing {
     publications {
         create<MavenPublication>("maven"){
-            groupId = "de.crash"
+            groupId = "dev.crash"
             artifactId = "kryptoLib"
             version = "0.1"
         }

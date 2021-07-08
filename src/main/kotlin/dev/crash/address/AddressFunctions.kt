@@ -1,6 +1,6 @@
-package de.crash.address
+package dev.crash.address
 
-import de.crash.base.Base58
+import dev.crash.base.Base58
 import org.bouncycastle.jcajce.provider.digest.Keccak
 import org.bouncycastle.jcajce.provider.digest.RIPEMD160
 import org.bouncycastle.jcajce.provider.digest.SHA256

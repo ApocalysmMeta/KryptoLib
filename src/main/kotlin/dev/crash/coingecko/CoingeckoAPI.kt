@@ -1,10 +1,10 @@
-package de.crash.coingecko
+package dev.crash.coingecko
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import de.crash.get
-import de.crash.joinToNoSpaceString
+import dev.crash.get
+import dev.crash.joinToNoSpaceString
 import java.net.URL
 import java.time.Instant
 import java.time.format.DateTimeFormatter
@@ -215,7 +215,6 @@ object CoingeckoAPI {
         return jacksonObjectMapper().readValue<CoingeckoGlobalDefiResponse>(response).data
     }
 
-    //Just bitcoin or ethereum
     fun companies(coinId: String): CoingeckoCompaniesPublicTreasuryResponse {
         val response = URL("$baseURL/companies/public_treasury/$coinId").get()
         return jacksonObjectMapper().readValue(response)

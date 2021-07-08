@@ -1,4 +1,4 @@
-package de.crash.bscscan
+package dev.crash.bscscan
 
 data class BscscanValidator(
     val validatorAddress: String,

@@ -1,4 +1,4 @@
-package de.crash.address
+package dev.crash.address
 
 enum class AddressType{ BTC, ETH, BNB, TRX, LTC, BCH, DASH, DOGE, DGB, RDD }
 

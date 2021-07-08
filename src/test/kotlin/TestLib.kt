@@ -1,4 +1,4 @@
-import de.crash.etherscan.EtherscanClient
+import dev.crash.etherscan.EtherscanClient
 
 fun main(){
 

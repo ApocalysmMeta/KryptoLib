@@ -1,4 +1,4 @@
-package de.crash.address
+package dev.crash.address
 
 object AddressGen {
     fun genAddress(type: AddressType): Address {

@@ -1,4 +1,4 @@
-package de.crash.coingecko
+package dev.crash.coingecko
 
 import com.fasterxml.jackson.databind.JsonNode
 

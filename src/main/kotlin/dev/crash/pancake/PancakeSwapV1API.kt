@@ -1,8 +1,8 @@
-package de.crash.pancake
+package dev.crash.pancake
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import de.crash.get
+import dev.crash.get
 import java.net.URL
 
 object PancakeSwapV1API {

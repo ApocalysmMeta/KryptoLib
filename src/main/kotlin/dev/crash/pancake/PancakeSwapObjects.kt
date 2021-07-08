@@ -1,4 +1,4 @@
-package de.crash.pancake
+package dev.crash.pancake
 
 data class PancakeSwapTokensResponse (
     val updated_at: Long,
