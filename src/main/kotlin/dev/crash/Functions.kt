@@ -4,7 +4,8 @@ import java.net.URL
 import java.nio.charset.Charset
 import javax.net.ssl.HttpsURLConnection
 
-internal fun URL.get(): String{
+
+internal fun URL.get(): String {
     val con: HttpsURLConnection = this.openConnection() as HttpsURLConnection
     con.requestMethod = "GET"
     con.setRequestProperty("Content-Type", "application/json")
