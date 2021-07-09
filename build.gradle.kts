@@ -34,7 +34,7 @@ publishing {
 }
 
 tasks.withType<PublishToMavenLocal> {
-    doLast{
+    doLast {
         project.file("/build/libs/KryptoLib-$version.jar").copyTo(file("C:\\Users\\${System.getProperties()["user.name"]}\\.m2\\repository\\dev\\crash\\kryptoLib\\0.1\\KryptoLib-$version.jar"), overwrite = true)
     }
 }
