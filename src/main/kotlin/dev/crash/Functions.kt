@@ -28,7 +28,7 @@ internal fun URL.post(json: Boolean = false, params: HashMap<String, String> = h
     val con: HttpURLConnection = this.openConnection() as HttpURLConnection
     con.requestMethod = "POST"
     con.doOutput = true
-    con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded")
+    con.setRequestProperty("Content-Type", if(json)"application/json" else "application/x-www-form-urlencoded")
     con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36")
     con.setRequestProperty("Content-Length", postData.length.toString())
     con.useCaches = false
