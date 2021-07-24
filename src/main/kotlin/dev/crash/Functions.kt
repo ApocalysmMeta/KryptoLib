@@ -4,7 +4,6 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import java.io.BufferedReader
 import java.io.DataOutputStream
 import java.io.InputStreamReader
-import java.lang.StringBuilder
 import java.net.HttpURLConnection
 import java.net.URL
 import java.nio.charset.Charset
@@ -45,3 +44,17 @@ internal fun HashMap<String, String>.asRequestString(): String {
 }
 
 internal fun List<Any>.joinToNoSpaceString(): String = this.joinToString{it.toString()}.replace(" ", "")
+
+fun ByteArray.toHexString() = asUByteArray().joinToString("") { it.toString(16).padStart(2, '0') }
+
+fun String.asHexByteArray(): ByteArray {
+    val len = this.length
+    val data = ByteArray(len / 2)
+    var i = 0
+    while (i < len) {
+        data[i / 2] = ((Character.digit(this[i], 16) shl 4)
+                + Character.digit(this[i + 1], 16)).toByte()
+        i += 2
+    }
+    return data
+}

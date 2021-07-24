@@ -1,5 +1,7 @@
 package dev.crash.address
 
+import dev.crash.toHexString
+
 object AddressGen {
     fun genAddress(type: AddressType): Address {
         try {
@@ -69,4 +71,6 @@ object AddressGen {
         val address = (getaddedChecksum(publicKeyWithVersion, publicKeyWithVersion.checksum())).base58()
         return Address(privateKey, address, type)
     }
+
+    fun getBTCTestnetAddress() : Address = genBTCAddress(AddressType.BTC, 0x6f)
 }
