@@ -4,7 +4,7 @@
 - Pancakeswap API
 - Most of the Coingecko API
 - Etherscan/Bscscan API
-- Dogechain.info Simple Query API
+- Dogechain.info API
 
 You can find the supported currencies in the AddressType enum.
 
