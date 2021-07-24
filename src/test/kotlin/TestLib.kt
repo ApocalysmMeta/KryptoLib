@@ -1,5 +1,7 @@
-import dev.crash.dogechain.DogechainInfoJsonAPI
+
+import dev.crash.post
+import java.net.URL
 
 fun main(){
-    println(DogechainInfoJsonAPI.getBlock(120000).hash)
+    println(URL("https://dogechain.info/api/v1/pushtx").post())
 }
