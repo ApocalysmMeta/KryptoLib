@@ -39,9 +39,14 @@ object CoingeckoAPI {
         return jacksonObjectMapper().readValue<CoingeckoSupportedVsCurrenciesResponse>(response)
     }
 
-    fun listCoins(includePlatform: Boolean = false): List<CoingeckoCoinsListObj>{
+    fun coinsList(includePlatform: Boolean = false): List<CoingeckoCoinsListObj>{
         val response = URL("$baseURL/coins/list?include_platform=$includePlatform").get()
         return jacksonObjectMapper().readValue<CoingeckoCoinsListResponse>(response)
+    }
+
+    fun coinsMarket(vsCurrency: String, order: String = "market_cap_desc", perPage: Int = 100, page: Int = 1): List<CoingeckoMarketObj> {
+        val response = URL("$baseURL/coins/list?vs_currency=$vsCurrency&order=$order&per_page=$perPage&page=$page").get()
+        return jacksonObjectMapper().readValue(response)
     }
 
     fun coin(id: String, includeAllLanguages: Boolean = true, includeTickers: Boolean = true, includeMarketData: Boolean = true,

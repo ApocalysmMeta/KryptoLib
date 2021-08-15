@@ -1,4 +1,4 @@
-package dev.crash.tx
+package dev.crash.tx.raw
 
 import dev.crash.BytePacket
 import dev.crash.ByteSwapper
@@ -7,11 +7,16 @@ import dev.crash.address.getHashedPublicKey
 import dev.crash.address.getUncompressedPublicKey
 import dev.crash.asHexByteArray
 import dev.crash.toHexString
+import dev.crash.tx.signed.SignedTransaction
+import dev.crash.tx.buildP2PKHScriptPupKey
+import dev.crash.tx.signed.SignedBtcTransaction
 
-class RawTransaction(val from: Address, val to: String, val amount: Long) {
+
+class RawBtcTransaction(val from: Address, val to: String, val amount: Long) : RawTransaction(from.type) {
     constructor(from: Address, to: String, amount: Int): this(from, to, amount.toLong())
 
     init {
+        // According to https://learnmeabitcoin.com/technical/transaction-data
         val packet = BytePacket()
         packet.write(ByteSwapper.swap(1)) // Version
 
@@ -20,7 +25,7 @@ class RawTransaction(val from: Address, val to: String, val amount: Long) {
         packet.write(ByteSwapper.swap("fe0196ddd86d6d3cb3ca75b471271e1126c8616c5374e51fe2291752773bb03a".asHexByteArray()))
         packet.write(ByteSwapper.swap(1))
         val scriptSig = mutableListOf<Byte>()
-        //Add signature
+        //TODO: Add signature
         scriptSig.addAll(getUncompressedPublicKey(from.privateKey).asList())
         packet.writeAsVarInt(scriptSig.size)
         packet.write(scriptSig.toByteArray())
@@ -28,7 +33,7 @@ class RawTransaction(val from: Address, val to: String, val amount: Long) {
 
         //Output
         packet.writeAsVarInt(1)
-        packet.write(ByteSwapper.swap(9000.toLong()))
+        packet.write(ByteSwapper.swap(amount))
         val scriptPubKey = buildP2PKHScriptPupKey(getHashedPublicKey(to))
         packet.writeAsVarInt(scriptPubKey.size)
         packet.write(scriptPubKey)
@@ -37,8 +42,5 @@ class RawTransaction(val from: Address, val to: String, val amount: Long) {
         println(packet.getByteArray().toHexString())
     }
 
-    fun sign(): String {
-        //Returns Hex encoded transaction
-        return ""
-    }
+    override fun sign(): SignedTransaction = SignedBtcTransaction(this)
 }

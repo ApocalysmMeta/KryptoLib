@@ -1,8 +1,7 @@
 package dev.crash.address
 
 import dev.crash.base.Base58
-import dev.crash.toHexString
-import dev.crash.tx.RawTransaction
+import dev.crash.tx.raw.RawBtcTransaction
 import org.bouncycastle.asn1.x9.X9ECParameters
 import org.bouncycastle.crypto.ec.CustomNamedCurves
 import org.bouncycastle.crypto.params.ECDomainParameters
@@ -25,7 +24,7 @@ import java.util.*
 
 
 class Address(val privateKey: String, val address: String, val type: AddressType) {
-    fun createTransaction(to: String, amount: Long): RawTransaction = RawTransaction(this, to, amount)
+    fun createTransaction(to: String, amount: Long): RawBtcTransaction = RawBtcTransaction(this, to, amount)
 
     fun getWIFKey(): String = privateKeyToWIF(privateKey, type)
 }
@@ -116,7 +115,7 @@ fun getUncompressedPublicKey(privateKey: String): ByteArray {
     return publicKeyFromPrivate(privKey).toByteArray()
 }
 
-private fun publicKeyFromPrivate(privKey: BigInteger): BigInteger {
+fun publicKeyFromPrivate(privKey: BigInteger): BigInteger {
     val point = publicPointFromPrivate(privKey)
     val encoded = point.getEncoded(false)
     return BigInteger(1, Arrays.copyOfRange(encoded, 0, encoded.size))
