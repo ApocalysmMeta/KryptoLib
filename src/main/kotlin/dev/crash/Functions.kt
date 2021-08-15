@@ -7,10 +7,12 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 import java.nio.charset.Charset
+import java.util.*
 import javax.net.ssl.HttpsURLConnection
+import kotlin.collections.HashMap
 
 
-internal fun URL.get(): String {
+fun URL.get(): String {
     val con: HttpsURLConnection = this.openConnection() as HttpsURLConnection
     con.requestMethod = "GET"
     con.setRequestProperty("Content-Type", "application/json")
@@ -18,14 +20,53 @@ internal fun URL.get(): String {
     return con.inputStream.readBytes().toString(Charset.defaultCharset())
 }
 
-internal fun URL.post(json: Boolean = false, params: HashMap<String, String> = hashMapOf()): String {
+fun URL.post(params: HashMap<String, Any> = hashMapOf(), json: Boolean = false): String {
     val postData = if(json){
         jacksonObjectMapper().writeValueAsString(params)
     }else {
-        params.asRequestString()
+        params.values.forEach {
+            if(it !is String){
+                throw InputMismatchException("Nothing else than Strings can be put in POST non-json request!")
+            }
+        }
+        val newParams = hashMapOf<String, String>()
+        params.forEach {
+            newParams[it.key] = it.value.toString()
+        }
+        newParams.asRequestString()
     }
+    return post(postData, json)
+}
+
+fun URL.post(requestString: String, json: Boolean = false): String {
     val con: HttpURLConnection = this.openConnection() as HttpURLConnection
     con.requestMethod = "POST"
+    con.doOutput = true
+    con.setRequestProperty("Content-Type", if(json)"application/json" else "application/x-www-form-urlencoded")
+    con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36")
+    con.setRequestProperty("Content-Length", requestString.length.toString())
+    con.useCaches = false
+    DataOutputStream(con.outputStream).use { dos -> dos.writeBytes(requestString) }
+    return BufferedReader(InputStreamReader(con.inputStream)).readText()
+}
+
+fun URL.put(params: HashMap<String, Any> = hashMapOf(), json: Boolean = false): String {
+    val postData = if(json){
+        jacksonObjectMapper().writeValueAsString(params)
+    }else {
+        params.values.forEach {
+            if(it !is String){
+                throw InputMismatchException("Nothing else than Strings can be put in POST non-json request!")
+            }
+        }
+        val newParams = hashMapOf<String, String>()
+        params.forEach {
+            newParams[it.key] = it.value.toString()
+        }
+        newParams.asRequestString()
+    }
+    val con: HttpURLConnection = this.openConnection() as HttpURLConnection
+    con.requestMethod = "PUT"
     con.doOutput = true
     con.setRequestProperty("Content-Type", if(json)"application/json" else "application/x-www-form-urlencoded")
     con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36")
@@ -35,7 +76,7 @@ internal fun URL.post(json: Boolean = false, params: HashMap<String, String> = h
     return BufferedReader(InputStreamReader(con.inputStream)).readText()
 }
 
-internal fun HashMap<String, String>.asRequestString(): String {
+fun HashMap<String, String>.asRequestString(): String {
     val builder = StringBuilder()
     this.forEach {
         builder.append(it.key).append("=").append(it.value).append("&")
@@ -43,11 +84,11 @@ internal fun HashMap<String, String>.asRequestString(): String {
     return builder.toString().removeSuffix("&")
 }
 
-internal fun List<Any>.joinToNoSpaceString(): String = this.joinToString{it.toString()}.replace(" ", "")
+fun List<Any>.joinToNoSpaceString(): String = this.joinToString{it.toString()}.replace(" ", "")
 
 fun ByteArray.toHexString() = asUByteArray().joinToString("") { it.toString(16).padStart(2, '0') }
 
-fun String.asHexByteArray(): ByteArray {
+internal fun String.asHexByteArray(): ByteArray {
     val len = this.length
     val data = ByteArray(len / 2)
     var i = 0

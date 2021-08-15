@@ -12,5 +12,5 @@ class RawEthTransaction(val from: Address, val to: String, val amount: Long) : R
         val packet = BytePacket()
     }
 
-    override fun sign(): SignedTransaction = SignedEthTransaction(this)
+    override fun sign(): SignedEthTransaction = SignedEthTransaction(this)
 }

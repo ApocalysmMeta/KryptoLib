@@ -42,5 +42,5 @@ class RawBtcTransaction(val from: Address, val to: String, val amount: Long) : R
         println(packet.getByteArray().toHexString())
     }
 
-    override fun sign(): SignedTransaction = SignedBtcTransaction(this)
+    override fun sign(): SignedBtcTransaction = SignedBtcTransaction(this)
 }
