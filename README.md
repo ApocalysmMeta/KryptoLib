@@ -8,7 +8,7 @@
 
 You can find the supported currencies in the AddressType enum.
 
-##WIP:
+## WIP:
 - Venly NFT API
 
 ## Contact:
