@@ -5,7 +5,7 @@
 - Coingecko API
 - Etherscan/Bscscan API
 - Dogechain.info API (except Websocket, will be added later)
-- Venly NFT API
+- Venly NFT API + NFT Analytics API
 
 ## WIP:
 - Tronscan API
