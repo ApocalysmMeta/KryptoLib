@@ -5,7 +5,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import dev.crash.get
 import java.net.URL
 
-object PancakeSwapV2API {
+object PancakeSwapAPI {
     private const val baseUrl = "https://api.pancakeswap.info/api/v2"
 
     fun getTokens(): PancakeSwapTokensResponse {

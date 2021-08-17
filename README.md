@@ -1,12 +1,10 @@
 # KryptoLib
 ## Features:
-- Address Generation for several currencies
-- Pancakeswap API
+- Address Generation for several currencies (you can find them in AddressType enum)
+- Pancakeswap API (just V2, V1 support is dropped)
 - Coingecko API
 - Etherscan/Bscscan API
-- Dogechain.info API
-
-You can find the supported currencies in the AddressType enum.
+- Dogechain.info API (except Websocket, will be added later)
 
 ## WIP:
 - Venly NFT API
