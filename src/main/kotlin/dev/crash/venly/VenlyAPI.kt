@@ -13,18 +13,18 @@ class VenlyAPI constructor(private val applicationId: String, private val client
     private var sessionState: String = ""
 
     fun createContract(name: String, description: String, chain: VenlyChain, symbol: String, imageUrl: String, externalUrl: String, media: List<VenlyMediaObj> = listOf()):
-            VenlyContractInfo = createContract(VenlyCreateContractBody(name, description, chain.name, symbol, imageUrl, externalUrl, media))
+            VenlyNFTContractInfo = createContract(VenlyCreateContractBody(name, description, chain.name, symbol, imageUrl, externalUrl, media))
 
-    fun createContract(requestBody: VenlyCreateContractBody): VenlyContractInfo {
+    fun createContract(requestBody: VenlyCreateContractBody): VenlyNFTContractInfo {
         return jacksonObjectMapper().readValue(URL("https://api-business.arkane.network/api/apps/$applicationId/contracts")
             .post(jacksonObjectMapper().writeValueAsString(requestBody)))
     }
 
-    fun getContract(contractId: Int): VenlyContractInfo {
+    fun getContract(contractId: Int): VenlyNFTContractInfo {
         return jacksonObjectMapper().readValue(URL("https://api-business.arkane.network/api/apps/$applicationId/contracts/$contractId").get())
     }
 
-    fun getAllContracts(): List<VenlyContractInfo> {
+    fun getAllContracts(): List<VenlyNFTContractInfo> {
         return jacksonObjectMapper().readValue(URL("https://api-business.arkane.network/api/apps/$applicationId/contracts").get())
     }
 
@@ -72,6 +72,18 @@ class VenlyAPI constructor(private val applicationId: String, private val client
 
     fun getNFTsByTemplate(contractId: Int, tokenTypeId: Int): List<VenlyNFTByTemplate> {
         return jacksonObjectMapper().readValue(URL("https://api-business.arkane.network/api/apps/$applicationId/contracts/$contractId/token-types/$tokenTypeId/tokens").get())
+    }
+
+    fun getNFTsByAddress(chain: VenlyChain, address: String): List<VenlyNFTBalance> {
+        return jacksonObjectMapper().readValue(URL("https://${chain.name.lowercase()}-azrael.arkane.network/$address/tokens").get())
+    }
+
+    fun getNFTContract(chain: VenlyChain, contractAddress: String): VenlyTokenContractInfo {
+        return jacksonObjectMapper().readValue(URL("https://${chain.name.lowercase()}-azrael.arkane.network/contracts/$contractAddress").get())
+    }
+
+    fun getNFTInfo(chain: VenlyChain, contractAddress: String, tokenId: Int): VenlyNFTInfo {
+        return jacksonObjectMapper().readValue(URL("https://${chain.name.lowercase()}-azrael.arkane.network/contracts/$contractAddress/tokens/$tokenId"))
     }
 
     fun authenticate(){

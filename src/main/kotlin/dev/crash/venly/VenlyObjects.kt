@@ -7,9 +7,9 @@ data class VenlyNFTAttribute(val type: String, val name: String, val value: Stri
 data class VenlyCreateContractBody(val name: String, val description: String, val chain: String, val symbol: String, val image: String,
                                    val externalUrl: String, val media: List<VenlyMediaObj>)
 
-data class VenlyContractInfo(val name: String, val description: String, val confirmed: Boolean, val id: Int,
-                             val chain: String, val symbol: String, val image: String, val externalUrl: String, val media: List<VenlyMediaObj>,
-                             val transactionHash: String)
+data class VenlyNFTContractInfo(val name: String, val description: String, val confirmed: Boolean, val id: Int,
+                                val chain: String, val symbol: String, val image: String, val externalUrl: String, val media: List<VenlyMediaObj>,
+                                val transactionHash: String)
 
 data class VenlyCreateNFTTemplateBody(val name: String, val description: String, val image: String, val externalUrl: String, val backgroudColor: String,
                                       val fungible: Boolean, val maxSupply: Long, val burnable: Boolean, val animationUrls: List<VenlyMediaObj>,
@@ -96,4 +96,32 @@ data class VenlyNFTByTemplate (
     val confirmed: Boolean,
     val amount: Long,
     val transactionHash: String
+)
+
+data class VenlyNFTBalance (
+    val type: String,
+    val address: String,
+    val name: String? = null,
+    val symbol: String? = null,
+    val tokens: List<VenlyNFTToken>
+)
+
+data class VenlyNFTToken (
+    val tokenId: String,
+    val balance: String,
+    val uri: String,
+    val metadata: String
+)
+
+data class VenlyTokenContractInfo (
+    val address: String,
+    val contractType: String,
+    val name: String,
+    val symbol: String
+)
+
+data class VenlyNFTInfo (
+    val contract: VenlyTokenContractInfo,
+    val uri: String,
+    val metadata: String
 )

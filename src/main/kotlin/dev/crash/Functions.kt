@@ -1,6 +1,10 @@
 package dev.crash
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
+import dev.crash.venly.VenlyNFTInfo
+import dev.crash.venly.VenlyNFTMetadata
+import dev.crash.venly.VenlyNFTToken
 import java.io.BufferedReader
 import java.io.DataOutputStream
 import java.io.InputStreamReader
@@ -102,3 +106,7 @@ fun dataToString(json: Boolean, params: HashMap<String, Any>): String {
         newParams.asRequestString()
     }
 }
+
+fun VenlyNFTToken.metadata(): VenlyNFTMetadata = jacksonObjectMapper().readValue(metadata)
+
+fun VenlyNFTInfo.metadata(): VenlyNFTMetadata = jacksonObjectMapper().readValue(metadata)
