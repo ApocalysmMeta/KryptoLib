@@ -44,18 +44,21 @@ fun URL.post(requestString: String, headerParams: HashMap<String, String> = hash
 }
 
 fun URL.put(params: HashMap<String, Any> = hashMapOf(), headerParams: HashMap<String, String> = hashMapOf(), json: Boolean = true): String {
-    val postData = dataToString(json, params)
+    return put(dataToString(json, params), headerParams, json)
+}
+
+fun URL.put(requestString: String, headerParams: HashMap<String, String> = hashMapOf(), json: Boolean = true): String {
     val con: HttpURLConnection = this.openConnection() as HttpURLConnection
     con.requestMethod = "PUT"
     con.doOutput = true
     con.setRequestProperty("Content-Type", if(json)"application/json" else "application/x-www-form-urlencoded")
     con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36")
-    con.setRequestProperty("Content-Length", postData.length.toString())
+    con.setRequestProperty("Content-Length", requestString.length.toString())
     headerParams.forEach {
         con.setRequestProperty(it.key, it.value)
     }
     con.useCaches = false
-    DataOutputStream(con.outputStream).use { dos -> dos.writeBytes(postData) }
+    DataOutputStream(con.outputStream).use { dos -> dos.writeBytes(requestString) }
     return BufferedReader(InputStreamReader(con.inputStream)).readText()
 }
 
