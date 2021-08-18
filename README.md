@@ -8,7 +8,7 @@
 - Venly NFT API + NFT Analytics API
 
 ## WIP:
-- Tronscan API
+- Transaction Building ETH & BTC
 
 ## Contact:
 Join our <a href="https://discord.gg/NbW6JVvxY7">Discord</a> for more info and support.
