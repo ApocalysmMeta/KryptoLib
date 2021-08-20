@@ -1,7 +1,6 @@
 package dev.crash.address
 
 import dev.crash.base.Base58
-import dev.crash.tx.raw.RawBtcTransaction
 import org.bouncycastle.asn1.x9.X9ECParameters
 import org.bouncycastle.crypto.ec.CustomNamedCurves
 import org.bouncycastle.crypto.params.ECDomainParameters
@@ -24,8 +23,6 @@ import java.util.*
 
 
 class Address(val privateKey: String, val address: String, val type: AddressType) {
-    fun createTransaction(to: String, amount: Long): RawBtcTransaction = RawBtcTransaction(this, to, amount)
-
     fun getWIFKey(): String = privateKeyToWIF(privateKey, type)
 }
 

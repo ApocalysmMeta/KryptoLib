@@ -12,6 +12,10 @@ class VenlyAPI constructor(private val applicationId: String, private val client
     private var refreshToken: String = ""
     private var sessionState: String = ""
 
+    init {
+        authenticate()
+    }
+
     fun createContract(name: String, description: String, chain: VenlyChain, symbol: String, imageUrl: String, externalUrl: String, media: List<VenlyMediaObj> = listOf()):
             VenlyNFTContractInfo = createContract(VenlyCreateContractBody(name, description, chain.name, symbol, imageUrl, externalUrl, media))
 
@@ -110,8 +114,4 @@ class VenlyAPI constructor(private val applicationId: String, private val client
         authenticate()
         return get(hashMapOf("Authorization" to "Bearer $bearerToken"))
     }
-
-    // https://docs.venly.io/api/api-products/nft-api/create-nft-template
-
-    fun getSupportedChains(): Array<VenlyChain> = VenlyChain.values()
 }

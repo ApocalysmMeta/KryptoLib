@@ -1,5 +1,6 @@
 package dev.crash
 
+import dev.crash.tx.BTCOPCODE
 import java.nio.charset.Charset
 import kotlin.experimental.and
 import kotlin.experimental.or
@@ -18,6 +19,10 @@ class BytePacket() {
         byteBuffer.add(value)
     }
 
+    fun write(value: BTCOPCODE){
+        write(value.code)
+    }
+
     fun write(value: ByteArray) {
         byteBuffer.addAll(value.asList())
     }
@@ -32,6 +37,22 @@ class BytePacket() {
 
     fun writeAsVarLong(value: Long) {
         byteBuffer.addAll(value.toByteArrayAsVarLong())
+    }
+
+    fun writeAsCompactUInt(value: Int) {
+        if(value <= 252){
+            write(value.toByte())
+        }
+        else if(value <= 0xffff){
+            write(0xfd)
+            write(value.toShort())
+        }else if(value <= 0xffffffff){
+            write(0xfe)
+            write(value)
+        }else {
+            write(0xff)
+            write(value.toLong())
+        }
     }
 
     fun write(value: Int) {
