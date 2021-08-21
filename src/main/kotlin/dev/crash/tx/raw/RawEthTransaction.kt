@@ -2,15 +2,28 @@ package dev.crash.tx.raw
 
 import dev.crash.BytePacket
 import dev.crash.address.Address
+import dev.crash.asHexByteArray
+import dev.crash.etherscan.Etherscan
+import dev.crash.tx.ETHNetwork
 import dev.crash.tx.signed.SignedEthTransaction
-import dev.crash.tx.signed.SignedTransaction
 
-class RawEthTransaction(val from: Address, val to: String, val amount: Long) : RawTransaction(from.type) {
-    constructor(from: Address, to: String, amount: Int): this(from, to, amount.toLong())
+class RawEthTransaction(val from: Address, val to: String, val amount: Long, val ethNetwork: ETHNetwork) {
+
+    val bytes: ByteArray
 
     init {
         val packet = BytePacket()
+        packet.writeETHByte(0) //Nonce
+        packet.writeArrayWithSize("09BCA5A000".asHexByteArray()) //Gas Price
+        packet.writeETHNumber(21000) //Gas Limit
+        packet.writeArrayWithSize(to.removePrefix("0x").asHexByteArray()) //To address
+        packet.writeETHNumber(amount) //Value
+        packet.writeETHByte(0) //Data
+        bytes = packet.getByteArray()
     }
 
-    override fun sign(): SignedEthTransaction = SignedEthTransaction(this)
+    fun sign(): SignedEthTransaction = SignedEthTransaction(this)
 }
+
+//41819676672
+//41000000000

@@ -13,23 +13,23 @@ import dev.crash.tx.buildP2PKHScriptPupKey
 import dev.crash.tx.signed.SignedBtcTransaction
 
 
-class RawBtcTransaction(val from: Address, val to: String, val amount: Long, val lockTime: Int = 0) : RawTransaction(from.type) {
-    constructor(from: Address, to: String, amount: Int, lockTime: Int = 0): this(from, to, amount.toLong(), lockTime)
+class RawBtcTransaction(val from: Address, val targets: HashMap<String, Long>, val lockTime: Int = 0) {
 
     val inputs: List<BTCTxInput>
     val outputs: List<BTCTxOutput>
-    val p2pkh: ByteArray
     val bytes: ByteArray
 
     init {
         val inputs = mutableListOf<BTCTxInput>()
+        //TODO: Get UTXO
         inputs.add(BTCTxInput("fe0196ddd86d6d3cb3ca75b471271e1126c8616c5374e51fe2291752773bb03a", 1, "76a91478757c3f1b4c3e5719fe573a86ff86c0fa9a1dfa88ac"))
         this.inputs = inputs.toList()
 
-        p2pkh = buildP2PKHScriptPupKey(getHashedPublicKey(to))
         val outputs = mutableListOf<BTCTxOutput>()
-        outputs.add(BTCTxOutput(amount-2000, p2pkh))
-        this.outputs = outputs.toList()
+        targets.forEach {
+            outputs.add(BTCTxOutput(it.value, buildP2PKHScriptPupKey(getHashedPublicKey(it.key))))
+        }
+        this.outputs = outputs
 
         //Create Template
         val prePacket = BytePacket()
@@ -59,5 +59,5 @@ class RawBtcTransaction(val from: Address, val to: String, val amount: Long, val
         println(bytes.toHexString())
     }
 
-    override fun sign(): SignedBtcTransaction = SignedBtcTransaction(this)
+    fun sign(): SignedBtcTransaction = SignedBtcTransaction(this)
 }

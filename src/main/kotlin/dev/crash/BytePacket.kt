@@ -10,7 +10,7 @@ class BytePacket() {
         this.bytes = bytes
     }
 
-    val byteBuffer = mutableListOf<Byte>()
+    private val byteBuffer = mutableListOf<Byte>()
     var bytes: ByteArray = ByteArray(0)
     var readPos = 0
 
@@ -19,8 +19,49 @@ class BytePacket() {
         byteBuffer.add(value)
     }
 
-    fun write(value: BTCOPCODE){
+    fun write(value: BTCOPCODE) {
         write(value.code)
+    }
+
+    fun writeETHByte(value: Byte) {
+        write((value + (Byte.MIN_VALUE*-1)).toByte())
+    }
+
+    fun writeArrayWithSize(value: ByteArray) {
+        writeETHByte(value.size.toByte())
+        write(value)
+    }
+
+    fun writeETHNumber(value: Byte) {
+        writeETHByte(1)
+        write(value)
+    }
+
+    fun writeETHNumber(value: Short) {
+        if(value <= Byte.MAX_VALUE){
+            writeETHNumber(value.toByte())
+        }else {
+            writeETHByte(2)
+            write(value)
+        }
+    }
+
+    fun writeETHNumber(value: Int) {
+        if(value <= Short.MAX_VALUE){
+            writeETHNumber(value.toShort())
+        }else {
+            writeETHByte(4)
+            write(value)
+        }
+    }
+
+    fun writeETHNumber(value: Long) {
+        if(value <= Int.MAX_VALUE){
+            writeETHNumber(value.toInt())
+        }else {
+            writeETHByte(8)
+            write(value)
+        }
     }
 
     fun write(value: ByteArray) {

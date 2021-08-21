@@ -1,19 +1,21 @@
-package dev.crash.etherscan
+package dev.crash.bscscan
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import dev.crash.etherscan.*
 import dev.crash.get
 import dev.crash.joinToNoSpaceString
 import java.math.BigDecimal
-import java.math.BigInteger
 import java.net.URL
 
-class EtherscanClient(private val API_KEY: String) {
-    private val baseURL = "https://api.etherscan.io/api"
+object Bscscan {
+    var API_KEY: String = ""
+
+    private val baseURL = "https://api.bscscan.com/api"
 
     fun getAccountBalance(address: String): BigDecimal {
         val response = URL("$baseURL?module=account&action=balance&address=$address&tag=latest&apikey=$API_KEY").get()
-        return BigDecimal(jacksonObjectMapper().readValue<EtherscanResponse<String>>(response).result).divide(BigDecimal("1000000000000000000"))
+        return jacksonObjectMapper().readValue<EtherscanResponse<BigDecimal>>(response).result
     }
 
     fun getAccountBalances(addresses: List<String>): HashMap<String, BigDecimal> {
@@ -45,17 +47,17 @@ class EtherscanClient(private val API_KEY: String) {
         return jacksonObjectMapper().readValue<EtherscanResponse<List<EtherscanInternalTransaction>>>(response).result
     }
 
-    fun getERC20TokenTransfersByAddress(address: String, startBlock: Int = 0, endBlock: Int = 99999999, sort: String = "asc"): List<EtherscanTokenTransfer> {
+    fun getBEP20TokenTransfersByAddress(address: String, startBlock: Int = 0, endBlock: Int = 99999999, sort: String = "asc"): List<EtherscanTokenTransfer> {
         val response = URL("$baseURL?module=account&action=tokentx&address=$address&startblock=$startBlock&endblock=$endBlock&sort=$sort&apikey=$API_KEY").get()
         return jacksonObjectMapper().readValue<EtherscanResponse<List<EtherscanTokenTransfer>>>(response).result
     }
 
-    fun getERC20TokenTransfersByContract(contractAddress: String, startBlock: Int = 0, endBlock: Int = 99999999, sort: String = "asc"): List<EtherscanTokenTransfer> {
+    fun getBEP20TokenTransfersByContract(contractAddress: String, startBlock: Int = 0, endBlock: Int = 99999999, sort: String = "asc"): List<EtherscanTokenTransfer> {
         val response = URL("$baseURL?module=account&action=tokentx&contractaddress=$contractAddress&startblock=$startBlock&endblock=$endBlock&sort=$sort&apikey=$API_KEY").get()
         return jacksonObjectMapper().readValue<EtherscanResponse<List<EtherscanTokenTransfer>>>(response).result
     }
 
-    fun getERC20TokenTransfers(address: String, contractAddress: String, startBlock: Int = 0, endBlock: Int = 99999999, sort: String = "asc"): List<EtherscanTokenTransfer> {
+    fun getBEP20TokenTransfers(address: String, contractAddress: String, startBlock: Int = 0, endBlock: Int = 99999999, sort: String = "asc"): List<EtherscanTokenTransfer> {
         val response = URL("$baseURL?module=account&action=tokentx&contractaddress=$contractAddress&address=$address&startblock=$startBlock&endblock=$endBlock&sort=$sort&apikey=$API_KEY").get()
         return jacksonObjectMapper().readValue<EtherscanResponse<List<EtherscanTokenTransfer>>>(response).result
     }
@@ -75,7 +77,7 @@ class EtherscanClient(private val API_KEY: String) {
         return jacksonObjectMapper().readValue<EtherscanResponse<List<EtherscanTokenTransfer>>>(response).result
     }
 
-    fun getBlocksMined(address: String, blockType: String = "blocks"): List<EtherscanBlock> {
+    fun getBlocksValidated(address: String, blockType: String = "blocks"): List<EtherscanBlock> {
         val response = URL("$baseURL?module=account&action=getminedblocks&address=$address&blocktype=$blockType&apikey=$API_KEY").get()
         return jacksonObjectMapper().readValue<EtherscanResponse<List<EtherscanBlock>>>(response).result
     }
@@ -100,43 +102,28 @@ class EtherscanClient(private val API_KEY: String) {
         return jacksonObjectMapper().readValue<EtherscanResponse<Int>>(response).result
     }
 
-    fun getERC20TokenTotalSupply(contractAddress: String): Long {
+    fun getBEP20TokenTotalSupply(contractAddress: String): Long {
         val response = URL("$baseURL?module=stats&action=getblocknobytime&contractaddress=$contractAddress&apikey=$API_KEY").get()
         return jacksonObjectMapper().readValue<EtherscanResponse<Long>>(response).result
     }
 
-    fun getERC20TokenBalance(address: String, contractAddress: String): BigDecimal {
+    fun getBEP20TokenBalance(address: String, contractAddress: String): Long {
         val response = URL("$baseURL?module=account&action=tokenbalance&contractaddress=$contractAddress&address=$address&tag=latest&apikey=$API_KEY").get()
-        return jacksonObjectMapper().readValue<EtherscanResponse<BigDecimal>>(response).result
-    }
-
-    fun getEstimatedConfirmationTime(gasPrice: Long): Long {
-        val response = URL("$baseURL?module=gastracker&action=gasestimate&gasprice=$gasPrice&apikey=$API_KEY").get()
         return jacksonObjectMapper().readValue<EtherscanResponse<Long>>(response).result
     }
 
-    fun getGasOracle(): EtherscanGasOracle {
-        val response = URL("$baseURL?module=gastracker&action=gasoracle&apikey=$API_KEY").get()
-        return jacksonObjectMapper().readValue<EtherscanResponse<EtherscanGasOracle>>(response).result
-    }
-
-    fun getTotalEtherSupply(): Long {
-        val response = URL("$baseURL?module=stats&action=ethsupply&apikey=$API_KEY").get()
+    fun getTotalBNBSupply(): Long {
+        val response = URL("$baseURL?module=stats&action=bnbsupply&apikey=$API_KEY").get()
         return jacksonObjectMapper().readValue<EtherscanResponse<Long>>(response).result / 1000000000000000000L
     }
 
-    fun getLatestEtherPrice(): EtherscanPrice {
-        val response = URL("$baseURL?module=stats&action=ethprice&apikey=$API_KEY").get()
+    fun getLatestBNBPrice(): EtherscanPrice {
+        val response = URL("$baseURL?module=stats&action=bnbprice&apikey=$API_KEY").get()
         return jacksonObjectMapper().readValue<EtherscanResponse<EtherscanPrice>>(response).result
     }
 
-    fun getEthereumNodeSize(startDate: String, endDate: String, clientType: String = "geth", syncMode: String = "default"): List<EtherscanNodeSize> {
-        val response = URL("$baseURL?module=stats&action=chainsize&startdate=$startDate&enddate=$endDate&clienttype=$clientType&syncMode=$syncMode&apikey=$API_KEY").get()
-        return jacksonObjectMapper().readValue<EtherscanResponse<List<EtherscanNodeSize>>>(response).result
-    }
-
-    fun getTotalNodeCount(): EtherscanNodeCount {
-        val response = URL("$baseURL?module=stats&action=nodecount&apikey=$API_KEY").get()
-        return jacksonObjectMapper().readValue<EtherscanResponse<EtherscanNodeCount>>(response).result
+    fun getValidators(): List<BscscanValidator> {
+        val response = URL("$baseURL?module=stats&action=validators&apikey=$API_KEY").get()
+        return jacksonObjectMapper().readValue<EtherscanResponse<List<BscscanValidator>>>(response).result
     }
 }
