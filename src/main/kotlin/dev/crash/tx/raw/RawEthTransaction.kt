@@ -7,7 +7,8 @@ import dev.crash.etherscan.Etherscan
 import dev.crash.tx.ETHNetwork
 import dev.crash.tx.signed.SignedEthTransaction
 
-class RawEthTransaction(val from: Address, val to: String, val amount: Long, val ethNetwork: ETHNetwork) {
+class RawEthTransaction(val from: Address, val to: String, val amount: Long, val chainId: Int) {
+    constructor(from: Address, to: String, amount: Long, ethNetwork: ETHNetwork): this(from, to, amount, ethNetwork.chainId)
 
     val bytes: ByteArray
 
