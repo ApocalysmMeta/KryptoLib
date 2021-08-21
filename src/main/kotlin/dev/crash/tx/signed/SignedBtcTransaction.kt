@@ -35,7 +35,7 @@ class SignedBtcTransaction internal constructor(rawTx: RawBtcTransaction) {
 
         //Actual Transaction
         val packet = BytePacket()
-        packet.write(ByteSwapper.swap(from.type.versionID)) // Version
+        packet.write(ByteSwapper.swap(1)) // Version
         //Inputs
         packet.writeAsCompactUInt(inputs.size)
         inputs.forEach {

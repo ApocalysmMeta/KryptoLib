@@ -31,7 +31,6 @@ class RawBtcTransaction(val from: Address, val targets: HashMap<String, Long>, v
         }
         this.outputs = outputs
 
-        //Create Template
         val prePacket = BytePacket()
         prePacket.write(ByteSwapper.swap(1)) // Version
         //Inputs
