@@ -7,10 +7,6 @@ import dev.crash.toHexString
 import dev.crash.tx.ETHNetwork
 import dev.crash.tx.ethSignWithECDSAsecp256k1
 import dev.crash.tx.raw.RawEthTransaction
-import org.bouncycastle.math.ec.custom.sec.SecP256K1Curve
-import org.bouncycastle.math.ec.custom.sec.SecP256K1Field
-import org.bouncycastle.math.ec.custom.sec.SecP256K1Point
-import java.math.BigInteger
 
 class SignedEthTransaction internal constructor(rawTx: RawEthTransaction) {
 

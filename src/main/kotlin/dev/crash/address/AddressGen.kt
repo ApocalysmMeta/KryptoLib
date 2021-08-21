@@ -9,7 +9,6 @@ object AddressGen {
                 AddressType.BTC -> genBTCAddress()
                 AddressType.BCH -> genBCHAddress()
                 AddressType.ETH -> genEthAddress()
-                AddressType.BNB -> genSmartChainAddress()
                 AddressType.TRX -> genTronAddress()
                 AddressType.LTC -> genLitecoinAddress()
                 AddressType.DASH -> genDashAddress()
@@ -42,14 +41,6 @@ object AddressGen {
         val last20bytes = keccak.copyOfRange(keccak.size - 20, keccak.size)
         val address = "0x${last20bytes.toHexString()}"
         return Address(privateKey, address, AddressType.ETH)
-    }
-
-    private fun genSmartChainAddress() : Address {
-        val keypair = genECDSAKeyPair()
-        val privateKey = keypair.private.getPrivateKeyString()
-        val publicKey = keypair.public.getPublicKeyBytes()
-        val address = publicKey.sha256().ripemd160()
-        return Address(privateKey, "0x${address.toHexString()}", AddressType.BNB)
     }
 
     private fun genTronAddress() : Address {
