@@ -10,6 +10,7 @@ version = "0.1"
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 apply(plugin = "maven-publish")

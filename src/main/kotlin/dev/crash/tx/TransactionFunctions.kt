@@ -7,6 +7,7 @@ import org.bouncycastle.crypto.signers.ECDSASigner
 import org.bouncycastle.jce.ECNamedCurveTable
 import java.math.BigInteger
 
+
 fun buildP2PKHScriptPupKey(pubKey: ByteArray): ByteArray {
     val list = mutableListOf<Byte>()
     list.addAll(listOf(BTCOPCODE.OP_DUP.code, BTCOPCODE.OP_HASH160.code))
