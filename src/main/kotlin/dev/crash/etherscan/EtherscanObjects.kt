@@ -1,6 +1,6 @@
 package dev.crash.etherscan
 
-data class EtherscanResponse<T>(
+internal data class EtherscanResponse<T>(
     val status: Int,
     val message: String,
     val result: T

@@ -37,9 +37,9 @@ class Etherscan(private val API_KEY: String) : EtherscanParent(baseURL, API_KEY)
         return jacksonObjectMapper().readValue<EtherscanResponse<EtherscanGasOracle>>(response).result
     }
 
-    fun getTotalEtherSupply(): Long {
+    fun getTotalEtherSupply(): BigDecimal {
         val response = URL("${baseURL}?module=stats&action=ethsupply&apikey=${API_KEY}").get()
-        return jacksonObjectMapper().readValue<EtherscanResponse<Long>>(response).result / 1000000000000000000L
+        return jacksonObjectMapper().readValue<EtherscanResponse<String>>(response).result.toBigDecimal() / 1000000000000000000.toBigDecimal()
     }
 
     fun getLatestEtherPrice(): EtherscanPrice {

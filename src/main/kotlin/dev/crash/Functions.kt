@@ -1,5 +1,6 @@
 package dev.crash
 
+import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import dev.crash.venly.VenlyNFTInfo
@@ -78,7 +79,7 @@ fun List<Any>.joinToNoSpaceString(): String = this.joinToString{it.toString()}.r
 
 fun ByteArray.toHexString() = asUByteArray().joinToString("") { it.toString(16).padStart(2, '0') }
 
-internal fun String.asHexByteArray(): ByteArray {
+fun String.asHexByteArray(): ByteArray {
     val len = this.length
     val data = ByteArray(len / 2)
     var i = 0
@@ -110,3 +111,9 @@ fun dataToString(json: Boolean, params: HashMap<String, Any>): String {
 fun VenlyNFTToken.metadata(): VenlyNFTMetadata = jacksonObjectMapper().readValue(metadata)
 
 fun VenlyNFTInfo.metadata(): VenlyNFTMetadata = jacksonObjectMapper().readValue(metadata)
+
+fun Boolean.toInt(): Int = if(this) 1 else 0
+
+fun JsonNode.toObjString(): String = jacksonObjectMapper().writeValueAsString(this)
+
+inline fun <reified T> JsonNode.getChildObj(name: String) = jacksonObjectMapper().readValue<T>(this[name].toObjString())

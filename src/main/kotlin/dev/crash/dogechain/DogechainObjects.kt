@@ -68,3 +68,46 @@ data class DogechainInfoTxOutput (
     val type: String,
     val address: String
 )
+
+data class DogechainWebsocketTransaction (
+    val hash: String,
+    val value_out: Long,
+    val lock_time: Long,
+    val vout_sz: Long,
+    val vin_sz: Long,
+    val ver: Long,
+    val inputs: List<DogechainWebsocketTxInput>,
+    val outputs: List<DogechainWebsocketTxOutput>,
+    val size: Long
+)
+
+data class DogechainWebsocketTxInput (
+    val prev_out: DogechainWebsocketTxPrevOut
+)
+
+data class DogechainWebsocketTxPrevOut (
+    val hash: String,
+    val n: Long,
+    val value: Long,
+    val addr: String
+)
+
+data class DogechainWebsocketTxOutput (
+    val value: Long,
+    val addr: String
+)
+
+data class DogechainWebsocketBlock (
+    val txs: List<String>,
+    val time: Long,
+    val height: Long,
+    val reward: Long,
+    val nonce: Long,
+    val hash: String,
+    val bits: String,
+    val difficulty: Double,
+    val n_tx: Long,
+    val merkleroot: String,
+    val size: Long,
+    val version: Long
+)

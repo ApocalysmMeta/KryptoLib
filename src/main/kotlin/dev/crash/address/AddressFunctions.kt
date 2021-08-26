@@ -119,12 +119,7 @@ fun publicKeyFromPrivate(privKey: BigInteger): BigInteger {
 }
 
 private val CURVE_PARAMS: X9ECParameters = CustomNamedCurves.getByName("secp256k1")
-private val CURVE = ECDomainParameters(
-    CURVE_PARAMS.curve,
-    CURVE_PARAMS.g,
-    CURVE_PARAMS.n,
-    CURVE_PARAMS.h
-)
+private val CURVE = ECDomainParameters(CURVE_PARAMS.curve, CURVE_PARAMS.g, CURVE_PARAMS.n, CURVE_PARAMS.h)
 
 private fun publicPointFromPrivate(privKey2: BigInteger): org.bouncycastle.math.ec.ECPoint {
     var privKey = privKey2

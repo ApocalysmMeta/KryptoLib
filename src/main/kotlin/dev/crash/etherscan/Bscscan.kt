@@ -3,6 +3,7 @@ package dev.crash.etherscan
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import dev.crash.get
+import java.math.BigDecimal
 import java.net.URL
 
 class Bscscan(private val API_KEY: String) : EtherscanParent(baseURL, API_KEY) {
@@ -36,9 +37,9 @@ class Bscscan(private val API_KEY: String) : EtherscanParent(baseURL, API_KEY) {
         return jacksonObjectMapper().readValue<EtherscanResponse<Long>>(response).result
     }
 
-    fun getTotalBNBSupply(): Long {
+    fun getTotalBNBSupply(): BigDecimal {
         val response = URL("$baseURL?module=stats&action=bnbsupply&apikey=$API_KEY").get()
-        return jacksonObjectMapper().readValue<EtherscanResponse<Long>>(response).result / 1000000000000000000L
+        return jacksonObjectMapper().readValue<EtherscanResponse<String>>(response).result.toBigDecimal() / 1000000000000000000.toBigDecimal()
     }
 
     fun getLatestBNBPrice(): EtherscanPrice {
