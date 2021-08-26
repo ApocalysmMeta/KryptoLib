@@ -117,3 +117,5 @@ fun Boolean.toInt(): Int = if(this) 1 else 0
 fun JsonNode.toObjString(): String = jacksonObjectMapper().writeValueAsString(this)
 
 inline fun <reified T> JsonNode.getChildObj(name: String) = jacksonObjectMapper().readValue<T>(this[name].toObjString())
+
+class EMPTY()
