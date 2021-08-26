@@ -1,5 +1,6 @@
 package dev.crash
 
+import dev.crash.exceptions.CouldNotReadValueOfTypeException
 import dev.crash.tx.BTCOPCODE
 import java.nio.charset.Charset
 import kotlin.experimental.and
@@ -246,10 +247,6 @@ class BytePacket() {
         newPacket.byteBuffer.addAll(this.byteBuffer)
         return newPacket
     }
-}
-
-class CouldNotReadValueOfTypeException(type: String) : Throwable() {
-    override val message: String = "Could not read Value of type $type from packet!"
 }
 
 fun Short.toByteArray(): ByteArray = byteArrayOf((this.toInt() ushr 8).toByte(), this.toByte())

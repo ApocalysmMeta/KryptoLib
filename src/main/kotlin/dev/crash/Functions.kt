@@ -91,7 +91,7 @@ fun String.asHexByteArray(): ByteArray {
     return data
 }
 
-fun dataToString(json: Boolean, params: HashMap<String, Any>): String {
+private fun dataToString(json: Boolean, params: HashMap<String, Any>): String {
     return if(json){
         jacksonObjectMapper().writeValueAsString(params)
     }else {
