@@ -15,6 +15,7 @@ import java.nio.charset.Charset
 import java.util.*
 import javax.net.ssl.HttpsURLConnection
 import kotlin.collections.HashMap
+import kotlin.experimental.or
 
 
 fun URL.get(headerParams: HashMap<String, String> = hashMapOf()): String {
@@ -118,4 +119,50 @@ fun JsonNode.toObjString(): String = jacksonObjectMapper().writeValueAsString(th
 
 inline fun <reified T> JsonNode.getChildObj(name: String) = jacksonObjectMapper().readValue<T>(this[name].toObjString())
 
-class EMPTY()
+class EMPTY
+
+fun Short.toByteArray(): ByteArray = byteArrayOf((this.toInt() ushr 8).toByte(), this.toByte())
+
+fun Int.toByteArrayAsVarInt(): MutableList<Byte> {
+    var bvalue = this
+    val result = mutableListOf<Byte>()
+    do {
+        var temp = (bvalue and 127).toByte()
+        bvalue = bvalue ushr 7
+        if (bvalue != 0) {
+            temp = temp or 128.toByte()
+        }
+        result.add(temp)
+    } while (bvalue != 0)
+    return result
+}
+
+fun Int.toByteArray():  MutableList<Byte> = byteArrayOf(
+    (this ushr 24).toByte(), (this ushr 16).toByte(),
+    (this ushr 8).toByte(), this.toByte()
+).toMutableList()
+
+fun Long.toByteArrayAsVarLong(): MutableList<Byte> {
+    var bvalue = this
+    val result = mutableListOf<Byte>()
+    do {
+        var temp = (bvalue and 127).toByte()
+        bvalue = bvalue ushr 7
+        if (bvalue != 0L) {
+            temp = temp or 128.toByte()
+        }
+        result.add(temp)
+    } while (bvalue != 0L)
+    return result
+}
+
+fun Long.toByteArray(): MutableList<Byte> = byteArrayOf(
+    (this ushr 56).toByte(), (this ushr 48).toByte(),
+    (this ushr 40).toByte(), (this ushr 32).toByte(), (this ushr 24).toByte(),
+    (this ushr 16).toByte(), (this ushr 8).toByte(), this.toByte()
+).toMutableList()
+
+inline fun <reified T> JsonNode.getObjectOfList(n: Int): T {
+    val list = jacksonObjectMapper().readValue<List<JsonNode>>(this.toObjString())
+    return jacksonObjectMapper().readValue(list[n-1].toObjString())
+}

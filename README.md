@@ -7,6 +7,7 @@
 - Dogechain.info API
 - Reddsight API
 - Venly NFT API + NFT Analytics API
+- BlockBook API (DigiExplorer)
 
 ## WIP:
 - Transaction Building ETH & BTC
