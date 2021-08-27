@@ -10,7 +10,7 @@ import java.time.Instant
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-object CoingeckoAPI {
+object Coingecko {
     private const val baseURL = "https://api.coingecko.com/api/v3"
 
     fun ping(): String {

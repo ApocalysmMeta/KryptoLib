@@ -7,7 +7,7 @@ import dev.crash.post
 import dev.crash.put
 import java.net.URL
 
-class VenlyAPI constructor(private val applicationId: String, private val client_secret: String) {
+class Venly constructor(private val applicationId: String, private val client_secret: String) {
     private var bearerToken: String = ""
     private var refreshToken: String = ""
     private var sessionState: String = ""
