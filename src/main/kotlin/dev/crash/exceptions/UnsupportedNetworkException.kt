@@ -1,6 +1,6 @@
 package dev.crash.exceptions
 
-import dev.crash.tx.ETHNetwork
+import dev.crash.eth.ETHNetwork
 
 class UnsupportedNetworkException(message: String) : Throwable(message) {
     constructor(): this("Unsupported ETH Network")

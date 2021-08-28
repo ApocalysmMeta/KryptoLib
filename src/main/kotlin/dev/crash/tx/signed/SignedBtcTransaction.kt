@@ -60,8 +60,8 @@ class SignedBtcTransaction internal constructor(rawTx: RawBtcTransaction) {
         println(hex)
     }
 
-    fun submit(): Boolean {
-        return true
+    fun submit(): String {
+        return ""
     }
 
     override fun toString(): String {

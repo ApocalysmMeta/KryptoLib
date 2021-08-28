@@ -3,8 +3,7 @@ package dev.crash.tx.raw
 import dev.crash.BytePacket
 import dev.crash.address.Address
 import dev.crash.asHexByteArray
-import dev.crash.etherscan.Etherscan
-import dev.crash.tx.ETHNetwork
+import dev.crash.eth.ETHNetwork
 import dev.crash.tx.signed.SignedEthTransaction
 
 class RawEthTransaction(val from: Address, val to: String, val amount: Long, val chainId: Int) {

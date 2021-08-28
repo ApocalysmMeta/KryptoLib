@@ -4,13 +4,10 @@ import dev.crash.BytePacket
 import dev.crash.KryptoLib
 import dev.crash.address.Address
 import dev.crash.address.keccak256
-import dev.crash.exceptions.UnsupportedNetworkException
 import dev.crash.toHexString
-import dev.crash.tx.ETHNetwork
 import dev.crash.tx.ethSignWithECDSAsecp256k1
 import dev.crash.tx.raw.RawEthTransaction
 import java.math.BigInteger
-
 
 class SignedEthTransaction internal constructor(rawTx: RawEthTransaction) {
 
@@ -49,18 +46,11 @@ class SignedEthTransaction internal constructor(rawTx: RawEthTransaction) {
         println(hex)
     }
 
-    fun submit() {
-        when(chainId){
-            ETHNetwork.MAINNET.chainId -> KryptoLib.DEFAULT_ETHERSCAN.sendRawTransaction(hex)
-            ETHNetwork.SMART_CHAIN.chainId -> KryptoLib.DEFAULT_BSCSCAN.sendRawTransaction(hex)
-            else -> {
-                val networks = ETHNetwork.values().filter { it.chainId == chainId }
-                if(networks.isEmpty()){
-                    throw UnsupportedNetworkException(chainId)
-                }else {
-                    throw UnsupportedNetworkException(networks.first())
-                }
-            }
+    fun submit(): String {
+        return if(KryptoLib.ethHandlers.containsKey(chainId)){
+            KryptoLib.ethHandlers[chainId]!!.sendRawTransaction(hex)
+        }else {
+            throw UnsupportedOperationException("Can't send ether on network $chainId, did you forgot to register an ETHHandler?")
         }
     }
 }

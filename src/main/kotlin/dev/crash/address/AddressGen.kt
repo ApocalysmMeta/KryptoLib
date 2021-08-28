@@ -1,11 +1,12 @@
 package dev.crash.address
 
+import dev.crash.address.types.ETHAddress
 import dev.crash.toHexString
 
 object AddressGen {
     fun genAddress(type: AddressType): Address {
-        try {
-            return when (type) {
+        return try {
+            when (type) {
                 AddressType.BTC -> genBTCAddress()
                 AddressType.BCH -> genBCHAddress()
                 AddressType.ETH -> genEthAddress()
@@ -17,7 +18,7 @@ object AddressGen {
                 AddressType.RDD -> genReddAddress()
             }
         }catch (ex: IllegalArgumentException) {
-            return genAddress(type)
+            genAddress(type)
         }
     }
 
@@ -40,7 +41,7 @@ object AddressGen {
         val keccak = publicKey.keccak256()
         val last20bytes = keccak.copyOfRange(keccak.size - 20, keccak.size)
         val address = "0x${last20bytes.toHexString()}"
-        return Address(privateKey, address, AddressType.ETH)
+        return ETHAddress(privateKey, address)
     }
 
     private fun genTronAddress() : Address {
@@ -51,7 +52,7 @@ object AddressGen {
         val last20bytes = keccak.copyOfRange(keccak.size - 20, keccak.size)
         val withVersion = getWithVersion(last20bytes, 0x41)
         val address = (getaddedChecksum(withVersion, withVersion.checksum())).base58()
-        return Address(privateKey, address, AddressType.TRX)
+        return DefaultAddress(privateKey, address, AddressType.TRX)
     }
 
     private fun genBTCAddress(type: AddressType = AddressType.BTC, version: Byte = 0x00) : Address {
@@ -60,7 +61,7 @@ object AddressGen {
         val publicKey = keypair.public.getPublicKeyBytes()
         val publicKeyWithVersion = getWithVersion(publicKey.sha256().ripemd160(), version)
         val address = (getaddedChecksum(publicKeyWithVersion, publicKeyWithVersion.checksum())).base58()
-        return Address(privateKey, address, type)
+        return DefaultAddress(privateKey, address, type)
     }
 
     fun getBTCTestnetAddress() : Address = genBTCAddress(AddressType.BTC, 0x6f)

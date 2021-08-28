@@ -9,8 +9,7 @@ import dev.crash.venly.VenlyNFTToken
 import java.io.BufferedReader
 import java.io.DataOutputStream
 import java.io.InputStreamReader
-import java.net.HttpURLConnection
-import java.net.URL
+import java.net.*
 import java.nio.charset.Charset
 import java.util.*
 import javax.net.ssl.HttpsURLConnection
@@ -19,13 +18,14 @@ import kotlin.experimental.or
 
 
 fun URL.get(headerParams: HashMap<String, String> = hashMapOf()): String {
-    val con: HttpsURLConnection = this.openConnection() as HttpsURLConnection
+    val con = this.openConnection() as HttpsURLConnection
     con.requestMethod = "GET"
+    con.doOutput = true
+    con.doInput = true
+    con.useCaches = false
     con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36")
     headerParams.forEach {
         con.setRequestProperty(it.key, it.value)
-        println(it.key)
-        println(it.value)
     }
     return con.inputStream.readBytes().toString(Charset.defaultCharset())
 }
@@ -35,9 +35,10 @@ fun URL.post(params: HashMap<String, Any> = hashMapOf(), headerParams: HashMap<S
 }
 
 fun URL.post(requestString: String, headerParams: HashMap<String, String> = hashMapOf(), json: Boolean = true): String {
-    val con: HttpURLConnection = this.openConnection() as HttpURLConnection
+    val con: HttpsURLConnection = this.openConnection() as HttpsURLConnection
     con.requestMethod = "POST"
     con.doOutput = true
+    con.doInput = true
     con.setRequestProperty("Content-Type", if(json)"application/json" else "application/x-www-form-urlencoded")
     con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36")
     con.setRequestProperty("Content-Length", requestString.length.toString())
@@ -54,9 +55,10 @@ fun URL.put(params: HashMap<String, Any> = hashMapOf(), headerParams: HashMap<St
 }
 
 fun URL.put(requestString: String, headerParams: HashMap<String, String> = hashMapOf(), json: Boolean = true): String {
-    val con: HttpURLConnection = this.openConnection() as HttpURLConnection
+    val con: HttpsURLConnection = this.openConnection() as HttpsURLConnection
     con.requestMethod = "PUT"
     con.doOutput = true
+    con.doInput = true
     con.setRequestProperty("Content-Type", if(json)"application/json" else "application/x-www-form-urlencoded")
     con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36")
     con.setRequestProperty("Content-Length", requestString.length.toString())

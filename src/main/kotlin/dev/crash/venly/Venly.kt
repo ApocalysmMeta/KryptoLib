@@ -29,7 +29,7 @@ class Venly constructor(private val applicationId: String, private val client_se
     }
 
     fun getAllContracts(): List<VenlyNFTContractInfo> {
-        return jacksonObjectMapper().readValue(URL("https://api-business.arkane.network/api/apps/$applicationId/contracts").get())
+        return jacksonObjectMapper().readValue(URL("http://api-business.arkane.network/api/apps/$applicationId/contracts").get())
     }
 
     fun createNFTTemplate(contractId: Int, name: String, description: String, imageUrl: String, externalUrl: String, maxSupply: Long,
@@ -93,7 +93,6 @@ class Venly constructor(private val applicationId: String, private val client_se
     fun authenticate(){
         val response = URL("https://login-staging.arkane.network/auth/realms/Arkane/protocol/openid-connect/token").post(
             hashMapOf("grant_type" to "client_credentials", "client_id" to "Testaccount-capsule", "client_secret" to client_secret), hashMapOf(), false)
-        println(response)
         val obj = jacksonObjectMapper().readTree(response)
         bearerToken = obj["access_token"].asText()
         refreshToken = obj["refresh_token"].asText()

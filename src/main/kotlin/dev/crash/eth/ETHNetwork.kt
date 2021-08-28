@@ -1,4 +1,4 @@
-package dev.crash.tx
+package dev.crash.eth
 
 enum class ETHNetwork(val chainId: Int) {
     MAINNET(1),
