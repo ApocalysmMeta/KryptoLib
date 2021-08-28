@@ -80,20 +80,6 @@ fun HashMap<String, String>.asRequestString(): String {
 
 fun List<Any>.joinToNoSpaceString(): String = this.joinToString{it.toString()}.replace(" ", "")
 
-fun ByteArray.toHexString() = asUByteArray().joinToString("") { it.toString(16).padStart(2, '0') }
-
-fun String.asHexByteArray(): ByteArray {
-    val len = this.length
-    val data = ByteArray(len / 2)
-    var i = 0
-    while (i < len) {
-        data[i / 2] = ((Character.digit(this[i], 16) shl 4)
-                + Character.digit(this[i + 1], 16)).toByte()
-        i += 2
-    }
-    return data
-}
-
 private fun dataToString(json: Boolean, params: HashMap<String, Any>): String {
     return if(json){
         jacksonObjectMapper().writeValueAsString(params)
@@ -168,3 +154,5 @@ inline fun <reified T> JsonNode.getObjectOfList(n: Int): T {
     val list = jacksonObjectMapper().readValue<List<JsonNode>>(this.toObjString())
     return jacksonObjectMapper().readValue(list[n-1].toObjString())
 }
+
+fun String.toUTF8ByteArray(): ByteArray = toByteArray(Charset.defaultCharset())

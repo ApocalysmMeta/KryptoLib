@@ -3,11 +3,11 @@
 - Address Generation for several currencies (you can find them in AddressType enum)
 - Pancakeswap API
 - Coingecko API
-- Etherscan/Bscscan API
+- Etherscan(and all testnet API's)/Bscscan API
 - Dogechain.info API
 - Reddsight API
 - Venly NFT API + NFT Analytics API
-- BlockBook API (e.g. DigiExplorer)
+- BlockBook API
 - SushiSwap API
 - most of Tronscan API
 

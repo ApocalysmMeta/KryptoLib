@@ -1,10 +1,11 @@
-package dev.crash.base
+package dev.crash.crypto
 
 object Base58 {
     private val ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz".toCharArray()
     private val BASE_58 = ALPHABET.size
     private const val BASE_256 = 256
     private val INDEXES = IntArray(128)
+
     fun encode(inputArray: ByteArray): String {
         var input = inputArray
         if (input.isEmpty()) {

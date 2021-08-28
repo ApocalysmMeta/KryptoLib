@@ -1,7 +1,7 @@
 package dev.crash.address
 
 import dev.crash.address.types.ETHAddress
-import dev.crash.toHexString
+import dev.crash.crypto.*
 
 object AddressGen {
     fun genAddress(type: AddressType): Address {
@@ -64,5 +64,5 @@ object AddressGen {
         return DefaultAddress(privateKey, address, type)
     }
 
-    fun getBTCTestnetAddress() : Address = genBTCAddress(AddressType.BTC, 0x6f)
+    fun genBTCTestnetAddress() : Address = genBTCAddress(AddressType.BTC, 0x6f)
 }

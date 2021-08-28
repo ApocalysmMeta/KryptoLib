@@ -3,8 +3,9 @@ package dev.crash.tx.signed
 import dev.crash.*
 import dev.crash.address.Address
 import dev.crash.address.getUncompressedPublicKey
-import dev.crash.address.sha256
-import dev.crash.asHexByteArray
+import dev.crash.crypto.asHexByteArray
+import dev.crash.crypto.sha256
+import dev.crash.crypto.toHexString
 import dev.crash.tx.BTCTxInput
 import dev.crash.tx.BTCTxOutput
 import dev.crash.tx.raw.RawBtcTransaction

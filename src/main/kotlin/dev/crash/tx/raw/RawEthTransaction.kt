@@ -2,7 +2,7 @@ package dev.crash.tx.raw
 
 import dev.crash.BytePacket
 import dev.crash.address.Address
-import dev.crash.asHexByteArray
+import dev.crash.crypto.asHexByteArray
 import dev.crash.eth.ETHNetwork
 import dev.crash.tx.signed.SignedEthTransaction
 
