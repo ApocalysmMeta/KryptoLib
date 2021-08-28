@@ -12,6 +12,7 @@
 
 ## WIP:
 - Transaction Building ETH & BTC
+- Tronscan API
 
 ## Contact:
 Join our <a href="https://discord.gg/NbW6JVvxY7">Discord</a> for more info and support.
