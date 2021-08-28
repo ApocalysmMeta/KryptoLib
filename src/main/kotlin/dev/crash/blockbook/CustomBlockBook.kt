@@ -1,3 +1,3 @@
 package dev.crash.blockbook
 
-class CustomBlockBook(baseURL: String) : Blockbook(baseURL)
+class CustomBlockBook(baseURL: String) : BlockBook(baseURL)

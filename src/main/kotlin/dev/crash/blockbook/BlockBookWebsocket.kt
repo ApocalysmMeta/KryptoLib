@@ -10,6 +10,7 @@ abstract class BlockBookWebsocket(url: String) : Websocket(url) {
     private val exeOnFiatRate = mutableListOf<(Map<String, Double>) -> Unit>()
 
     init {
+        connect()
         onMessage { message ->
             val obj = jacksonObjectMapper().readTree(message)
             if(obj["data"].has("subscribed")) {

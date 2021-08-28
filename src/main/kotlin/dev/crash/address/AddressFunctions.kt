@@ -1,6 +1,11 @@
 package dev.crash.address
 
+import dev.crash.KryptoLib
 import dev.crash.base.Base58
+import dev.crash.blockbook.*
+import dev.crash.dogechain.Dogechain
+import dev.crash.reddsight.Reddsight
+import dev.crash.tronscan.Tronscan
 import org.bouncycastle.asn1.x9.X9ECParameters
 import org.bouncycastle.crypto.ec.CustomNamedCurves
 import org.bouncycastle.crypto.params.ECDomainParameters
@@ -20,10 +25,25 @@ import java.security.interfaces.ECPublicKey
 import java.security.spec.ECGenParameterSpec
 import java.security.spec.ECPoint
 import java.util.*
+import kotlin.math.pow
 
 
 class Address(val privateKey: String, val address: String, val type: AddressType) {
     fun getWIFKey(): String = privateKeyToWIF(privateKey, type)
+
+    fun getBalance(): Double {
+        return when(type) {
+            AddressType.ETH -> KryptoLib.DEFAULT_ETHERSCAN.getAccountBalance(address).toDouble() / 10.0.pow(18)
+            AddressType.BTC -> BTCBlockBook.getAddress(address).balance.toLong() / 10.0.pow(8)
+            AddressType.DGB -> DigiExplorer.getAddress(address).balance.toLong() / 10.0.pow(8)
+            AddressType.DOGE -> Dogechain.getAddressBalance(address).toDouble()
+            AddressType.RDD -> Reddsight.getBalance(address).toDouble()
+            AddressType.TRX -> Tronscan.getAccount(address).balance / 10.0.pow(6)
+            AddressType.BCH -> BCHBlockBook.getAddress(address).balance.toLong() / 10.0.pow(8)
+            AddressType.LTC -> LTCBlockBook.getAddress(address).balance.toLong() / 10.0.pow(8)
+            AddressType.DASH -> DASHBlockBook.getAddress(address).balance.toLong() / 10.0.pow(8)
+        }
+    }
 }
 
 fun getaddedChecksum(key: ByteArray, checksum: ByteArray) : ByteArray{

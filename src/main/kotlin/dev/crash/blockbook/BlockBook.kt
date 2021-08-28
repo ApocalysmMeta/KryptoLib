@@ -7,7 +7,7 @@ import dev.crash.post
 import dev.crash.toObjString
 import java.net.URL
 
-abstract class Blockbook(private val baseURL: String) {
+abstract class BlockBook(private val baseURL: String) {
 
     fun getStatus(): BlockBookAPIStatus {
         return jacksonObjectMapper().readValue(URL(baseURL.removeSuffix("/v2")).get())

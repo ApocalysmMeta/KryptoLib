@@ -91,7 +91,7 @@ data class TronscanAccount (
     val bandwidth: TronscanAccountBandwidth,
     val date_created: Long,
     val accountType: Long,
-    val addressTag: String,
+    val addressTag: String?,
     val exchanges: List<JsonNode?>,
     val frozen: TronscanAccountFrozen,
     val accountResource: TronscanAccountResource,
@@ -101,7 +101,8 @@ data class TronscanAccount (
     val name: String,
     val frozenForEnergy: Long,
     val acquiredDelegateFrozenForEnergy: Long,
-    val activePermissions: List<JsonNode?>
+    val activePermissions: List<JsonNode?>,
+    val ownerPermission: JsonNode
 )
 
 data class TronscanAccountResource (
