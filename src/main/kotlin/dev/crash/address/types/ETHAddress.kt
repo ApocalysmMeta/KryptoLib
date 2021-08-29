@@ -32,7 +32,6 @@ class ETHAddress(privateKey: String, address: String) : Address(privateKey, addr
     fun sendEther(chainId: Int, to: String, amount: Long): String {
         return if(KryptoLib.ethHandlers.containsKey(chainId)){
             RawEthTransaction(this, to, amount, chainId).sign().submit()
-            ""
         }else {
             throw UnsupportedOperationException("Can't send ether on network $chainId, did you forgot to register an ETHHandler?")
         }

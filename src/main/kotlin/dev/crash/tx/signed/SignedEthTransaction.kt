@@ -5,9 +5,8 @@ import dev.crash.KryptoLib
 import dev.crash.address.Address
 import dev.crash.crypto.keccak256
 import dev.crash.crypto.toHexString
-import dev.crash.tx.ethSignWithECDSAsecp256k1
 import dev.crash.tx.raw.RawEthTransaction
-import java.math.BigInteger
+import dev.crash.tx.signWithECDSAsecp256k1
 
 class SignedEthTransaction internal constructor(rawTx: RawEthTransaction) {
 
@@ -20,12 +19,10 @@ class SignedEthTransaction internal constructor(rawTx: RawEthTransaction) {
 
     init {
         val keccak = rawTxBytes.keccak256()
-        val rsList = keccak.ethSignWithECDSAsecp256k1(from.privateKey)
-        val r = rsList[0]
-        val s = rsList[1]
-        val recId = r.mod(BigInteger.TWO).toInt() + chainId*2 + 35
-        var rBytes = r.toByteArray()
-        var sBytes = s.toByteArray()
+        val sig = keccak.signWithECDSAsecp256k1(from.privateKey)
+        val v = sig.v.toInt() + chainId*2 + 35
+        var rBytes = sig.r.toByteArray()
+        var sBytes = sig.s.toByteArray()
         while(rBytes.size > 32){
             rBytes = rBytes.drop(1).toByteArray()
         }
@@ -34,7 +31,7 @@ class SignedEthTransaction internal constructor(rawTx: RawEthTransaction) {
         }
         val packet = BytePacket()
         packet.write(rawTxBytes)
-        packet.write(recId.toByte())
+        packet.write(v.toByte())
         packet.writeArrayWithSize(rBytes)
         packet.writeArrayWithSize(sBytes)
         val bytes = packet.getByteArray()
@@ -48,7 +45,8 @@ class SignedEthTransaction internal constructor(rawTx: RawEthTransaction) {
 
     fun submit(): String {
         return if(KryptoLib.ethHandlers.containsKey(chainId)){
-            KryptoLib.ethHandlers[chainId]!!.sendRawTransaction(hex)
+            //KryptoLib.ethHandlers[chainId]!!.sendRawTransaction(hex)
+            ""
         }else {
             throw UnsupportedOperationException("Can't send ether on network $chainId, did you forgot to register an ETHHandler?")
         }

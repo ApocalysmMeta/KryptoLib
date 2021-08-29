@@ -5,12 +5,13 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import dev.crash.get
 import dev.crash.joinToNoSpaceString
 import java.math.BigDecimal
+import java.math.BigInteger
 import java.net.URL
 
 abstract class EtherscanParent(private val baseURL: String, private val API_KEY: String) {
-    fun getAccountBalance(address: String): BigDecimal {
+    fun getAccountBalance(address: String): BigInteger {
         val response = URL("${baseURL}?module=account&action=balance&address=$address&tag=latest&apikey=${API_KEY}").get()
-        return BigDecimal(jacksonObjectMapper().readValue<EtherscanResponse<String>>(response).result).divide(BigDecimal("1000000000000000000"))
+        return BigInteger(jacksonObjectMapper().readValue<EtherscanResponse<String>>(response).result)
     }
 
     fun getAccountBalances(addresses: List<String>): HashMap<String, BigDecimal> {

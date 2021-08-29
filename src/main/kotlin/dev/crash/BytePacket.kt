@@ -32,40 +32,12 @@ class BytePacket() {
         write(value)
     }
 
-    fun writeETHNumber(value: Byte) {
-        writeETHByte(1)
-        write(value)
-    }
-
-    fun writeETHNumber(value: Short) {
-        if(value <= Byte.MAX_VALUE){
-            writeETHNumber(value.toByte())
-        }else {
-            writeETHByte(2)
-            write(value)
-        }
-    }
-
-    fun writeETHNumber(value: Int) {
-        if(value <= Short.MAX_VALUE){
-            writeETHNumber(value.toShort())
-        }else {
-            writeETHByte(4)
-            write(value)
-        }
-    }
-
-    fun writeETHNumber(value: Long) {
-        if(value <= Int.MAX_VALUE){
-            writeETHNumber(value.toInt())
-        }else {
-            writeETHByte(8)
-            write(value)
-        }
-    }
-
     fun write(value: ByteArray) {
         byteBuffer.addAll(value.asList())
+    }
+
+    fun write(value: List<Byte>) {
+        byteBuffer.addAll(value)
     }
 
     fun write(value: Short) {

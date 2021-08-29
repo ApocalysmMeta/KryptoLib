@@ -9,7 +9,7 @@ import dev.crash.crypto.toHexString
 import dev.crash.tx.BTCTxInput
 import dev.crash.tx.BTCTxOutput
 import dev.crash.tx.raw.RawBtcTransaction
-import dev.crash.tx.signWithECDSAsecp256k1
+import dev.crash.tx.signWithECDSAsecp256k1BTC
 
 class SignedBtcTransaction internal constructor(rawTx: RawBtcTransaction) {
 
@@ -24,7 +24,7 @@ class SignedBtcTransaction internal constructor(rawTx: RawBtcTransaction) {
 
     init {
         //Script Sig
-        val signed = rawTxBytes.sha256().sha256().signWithECDSAsecp256k1(from.privateKey)
+        val signed = rawTxBytes.sha256().sha256().signWithECDSAsecp256k1BTC(from.privateKey)
         val scriptSig = BytePacket()
         scriptSig.writeAsCompactUInt(signed.size+1)
         scriptSig.write(signed)

@@ -27,8 +27,7 @@ object Tronscan {
             ("$baseURL/block?sort=$sort&limit=$limit&count=$count&start=$start&start_timestamp=$startTimestamp&end_timestamp=$endTimestamp").get()).data
     }
 
-    fun getBlocks(producer: String, sort: String = "-number", limit: Int = 20, start: Int = 20,
-                  count: Boolean = true): List<TronscanBlock> {
+    fun getBlocks(producer: String, sort: String = "-number", limit: Int = 20, start: Int = 20, count: Boolean = true): List<TronscanBlock> {
         return jacksonObjectMapper().readValue<TronscanResponse<List<TronscanBlock>>>(URL
             ("$baseURL/block?sort=$sort&limit=$limit&count=$count&start=$start&producer=$producer").get()).data
     }
