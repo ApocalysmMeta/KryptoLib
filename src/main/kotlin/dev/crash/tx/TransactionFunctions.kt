@@ -114,9 +114,7 @@ fun recoverPubBytesFromSignature(
 
 private fun decompressKey(xBN: BigInteger, yBit: Boolean): ECPoint {
     val x9 = X9IntegerConverter()
-    val compEnc = x9.integerToBytes(
-        xBN, 1 + x9.getByteLength(CURVE.curve)
-    )
+    val compEnc = x9.integerToBytes(xBN, 1 + x9.getByteLength(CURVE.curve))
     compEnc[0] = (if (yBit) 0x03 else 0x02).toByte()
     return CURVE.curve.decodePoint(compEnc)
 }

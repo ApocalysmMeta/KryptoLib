@@ -73,6 +73,7 @@ fun getHashedPublicKey(address: String): ByteArray {
     return droppedVersion.toByteArray()
 }
 
+//Wrong return value, doesnt match real pubkey
 fun getUncompressedPublicKey(privateKey: String): ByteArray {
     val privKey = BigInteger(privateKey, 16)
     return publicKeyFromPrivate(privKey).toByteArray()

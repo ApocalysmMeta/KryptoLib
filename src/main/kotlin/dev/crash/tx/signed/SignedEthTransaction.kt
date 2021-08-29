@@ -18,8 +18,7 @@ class SignedEthTransaction internal constructor(rawTx: RawEthTransaction) {
     val hex: String
 
     init {
-        val keccak = rawTxBytes.keccak256()
-        val sig = keccak.signWithECDSAsecp256k1(from.privateKey)
+        val sig = rawTxBytes.keccak256().signWithECDSAsecp256k1(from.privateKey)
         val v = sig.v.toInt() + chainId*2 + 35
         var rBytes = sig.r.toByteArray()
         var sBytes = sig.s.toByteArray()

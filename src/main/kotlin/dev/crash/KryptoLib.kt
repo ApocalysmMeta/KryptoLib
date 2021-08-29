@@ -21,6 +21,14 @@ object KryptoLib {
         ethHandlers[ethHandler.chainId] = ethHandler
     }
 
+    fun getETHHandler(chainId: Int): ETHHandler {
+        return if (ethHandlers.containsKey(chainId)){
+            ethHandlers[chainId]!!
+        }else {
+            throw UnsupportedOperationException("Unknown chain id $chainId, did you forget to register an ETHHandler?")
+        }
+    }
+
     fun setEtherscanAPIKey(apiKey: String) {
         DEFAULT_ETHERSCAN = Etherscan(apiKey)
         DEFAULT_ETHERSCAN_GOERLI = EtherscanGoerli(apiKey)

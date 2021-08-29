@@ -9,31 +9,25 @@ import dev.crash.tx.raw.RawEthTransaction
 class ETHAddress(privateKey: String, address: String) : Address(privateKey, address, AddressType.ETH) {
     fun getBalance(ethNetwork: ETHNetwork = ETHNetwork.MAINNET): Double = getBalance(ethNetwork.chainId)
 
-    fun getBalance(chainId: Int): Double {
-        return if(KryptoLib.ethHandlers.containsKey(chainId)){
-            KryptoLib.ethHandlers[chainId]!!.getBalance(address)
-        }else {
-            throw UnsupportedOperationException("Can't get the balance of address $address on network $chainId, did you forgot to register an ETHHandler?")
-        }
-    }
+    fun getBalance(chainId: Int): Double = KryptoLib.getETHHandler(chainId).getBalance(address)
 
     fun getTokenBalance(ethNetwork: ETHNetwork, tokenContract: String, decimals: Int = 18): Double = getTokenBalance(ethNetwork.chainId, tokenContract, decimals)
 
     fun getTokenBalance(chainId: Int, tokenContract: String, decimals: Int = 18): Double {
-        return if(KryptoLib.ethHandlers.containsKey(chainId)){
-            KryptoLib.ethHandlers[chainId]!!.getERC20TokenBalance(address, tokenContract, decimals)
-        }else {
-            throw UnsupportedOperationException("Can't get the balance of address $address on network $chainId, did you forgot to register an ETHHandler?")
-        }
+        return KryptoLib.getETHHandler(chainId).getERC20TokenBalance(address, tokenContract, decimals)
     }
 
     fun sendEther(ethNetwork: ETHNetwork, to: String, amount: Long): String = sendEther(ethNetwork.chainId, to, amount)
 
     fun sendEther(chainId: Int, to: String, amount: Long): String {
-        return if(KryptoLib.ethHandlers.containsKey(chainId)){
-            RawEthTransaction(this, to, amount, chainId).sign().submit()
-        }else {
-            throw UnsupportedOperationException("Can't send ether on network $chainId, did you forgot to register an ETHHandler?")
-        }
+        KryptoLib.getETHHandler(chainId)
+        return RawEthTransaction(this, to, amount, chainId).sign().submit()
+    }
+
+    fun sendToken(ethNetwork: ETHNetwork, to: String, amount: Long, tokenContract: String): String = sendToken(ethNetwork.chainId, to, amount, tokenContract)
+
+    fun sendToken(chainId: Int, to: String, amount: Long, tokenContract: String): String {
+        KryptoLib.getETHHandler(chainId)
+        return ""
     }
 }
